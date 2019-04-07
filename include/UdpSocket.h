@@ -15,6 +15,7 @@ class UdpSocket {
     void send(gsl::span<const gsl::byte> data);
     void send_to(gsl::span<const gsl::byte> data, const std::string& ip, int16_t port);
     std::vector<gsl::byte> recv();
+    void recv(std::string& buf);
     std::string recv_from(std::vector<gsl::byte>& buf);
     void bind_to(const std::string& ip, uint16_t port);
     void connect_to(const std::string& ip, uint16_t port);

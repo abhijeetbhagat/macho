@@ -45,6 +45,13 @@ std::vector<gsl::byte> UdpSocket::recv(){
   return data;
 }
 
+void UdpSocket::recv(std::string& buf){
+  std::unique_ptr<char[]> cbuf(new char[MAX_UDP_PACKET_SIZE]);
+  auto num_bytes = recvfrom(_sd, cbuf.get(), MAX_UDP_PACKET_SIZE, 0, nullptr, 0);
+  buf.resize(num_bytes);
+  buf.assign(cbuf.get(), num_bytes);
+}
+
 
 std::string UdpSocket::recv_from(std::vector<gsl::byte>& buf){ 
   sockaddr_in srcip;
