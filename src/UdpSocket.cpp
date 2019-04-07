@@ -25,14 +25,38 @@ void UdpSocket::send(gsl::span<const gsl::byte> data){
   }
 }
 
-std::vector<gsl::byte> UdpSocket::recv(){
-  std::vector<gsl::byte> data;
-  socklen_t *len;
-  *len = sizeof _myip;
-  recvfrom(_sd, data.data(), MAX_UDP_PACKET_SIZE, 0, (sockaddr*)&_myip, len);
+void UdpSocket::send_to(gsl::span<const gsl::byte> data, const std::string& ip, int16_t port){
+  sockaddr_in remoteip;
+  remoteip.sin_family = AF_INET;
+  remoteip.sin_port = htons(port);
+  inet_pton(AF_INET, ip.c_str(), &remoteip.sin_addr);
+  sendto(_sd,
+         data.data(),
+         data.size(),
+         0,
+         (sockaddr*)&remoteip,
+         sizeof remoteip);
 }
 
-void UdpSocket::bind_to(const std::string& ip, int port) {
+std::vector<gsl::byte> UdpSocket::recv(){
+  std::vector<gsl::byte> data(MAX_UDP_PACKET_SIZE);
+  recvfrom(_sd, data.data(), MAX_UDP_PACKET_SIZE, 0, nullptr, 0);
+  std::cout << "socket recvd " << data.size() << " bytes\n";
+  return data;
+}
+
+
+std::string UdpSocket::recv_from(std::vector<gsl::byte>& buf){ 
+  sockaddr_in srcip;
+  socklen_t *len;
+  *len = sizeof srcip;
+  recvfrom(_sd, buf.data(), MAX_UDP_PACKET_SIZE, 0, (sockaddr*)&srcip, len);
+  char out[INET_ADDRSTRLEN];
+  inet_ntop(AF_INET, &(srcip.sin_addr), out, INET_ADDRSTRLEN);
+  return std::string(out); 
+}
+
+void UdpSocket::bind_to(const std::string& ip, uint16_t port) {
   memset(&_myip, 0, sizeof _myip);
   _myip.sin_family = AF_INET;
   _myip.sin_port = htons(port);
@@ -42,7 +66,7 @@ void UdpSocket::bind_to(const std::string& ip, int port) {
   }
 }
 
-void UdpSocket::connect_to(const std::string& ip, int port) {
+void UdpSocket::connect_to(const std::string& ip, uint16_t port) {
   memset(&_remoteip, 0, sizeof _remoteip);
   _remoteip.sin_family = AF_INET;
   _remoteip.sin_port = htons(port);
