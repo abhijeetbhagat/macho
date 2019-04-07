@@ -13,7 +13,7 @@ clean:
 	rm -f $(OBJECTS) $(TARGET)
 
 %.o : %.cpp 
-	g++ $(CFLAGS) -c $< -o $@
+	g++ $(FLAGS) $(CFLAGS) -c $< -o $@
 
 $(TARGET): $(OBJECTS)
 	g++ $(FLAGS) $(CFLAGS) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
