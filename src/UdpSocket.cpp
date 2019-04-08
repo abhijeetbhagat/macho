@@ -1,9 +1,11 @@
 #include "../include/UdpSocket.h"
+#include <unistd.h>
 #include <iostream>
 #include <cstring>
 #define MAX_UDP_PACKET_SIZE 64 * 1024
 
 UdpSocket::UdpSocket(){
+  std::cout << "UdpSocket ctor called\n";
   _sd = socket(AF_INET, SOCK_DGRAM, 0);
   if(_sd < 0) {
     throw;
@@ -11,6 +13,7 @@ UdpSocket::UdpSocket(){
 }
 
 UdpSocket::~UdpSocket(){
+  close(_sd);
 }
 
 void UdpSocket::send(gsl::span<const gsl::byte> data){ 
