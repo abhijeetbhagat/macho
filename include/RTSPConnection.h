@@ -4,8 +4,9 @@
 
 class RTSPConnection{
   public:
-    RTSPConnection();
+    RTSPConnection(const std::string& server, uint16_t port);
     ~RTSPConnection();
+    void options();
 
   private:
     UdpSocket _socket;
