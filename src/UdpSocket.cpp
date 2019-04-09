@@ -76,12 +76,14 @@ void UdpSocket::bind_to(const std::string& ip, uint16_t port) {
   }
 }
 
-void UdpSocket::connect_to(const std::string& ip, uint16_t port) {
+int UdpSocket::connect_to(const std::string& ip, uint16_t port) {
   memset(&_remoteip, 0, sizeof _remoteip);
   _remoteip.sin_family = AF_INET;
   _remoteip.sin_port = htons(port);
   inet_pton(AF_INET, ip.c_str(), &_remoteip.sin_addr);
-  if(connect(_sd, (sockaddr*)&_remoteip, sizeof _remoteip) == -1){
+  int result = connect(_sd, (sockaddr*)&_remoteip, sizeof _remoteip);
+  if(result == -1){
     std::cout << "Error connect to remote socket.\n";
   }
+  return result;
 }
