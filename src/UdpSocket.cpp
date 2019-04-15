@@ -28,7 +28,7 @@ void UdpSocket::send(gsl::span<const gsl::byte> data){
   }
 }
 
-void UdpSocket::send_to(gsl::span<const gsl::byte> data, const std::string& ip, int16_t port){
+void UdpSocket::send_to(gsl::span<const gsl::byte> data, const std::string& ip, uint16_t port){
   sockaddr_in remoteip;
   remoteip.sin_family = AF_INET;
   remoteip.sin_port = htons(port);
