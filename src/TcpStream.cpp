@@ -2,11 +2,12 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <iostream>
+#include "../third_party/include/spdlog/spdlog.h"
 #define BACKLOG 128 //standard
 #define MAX_TCP_PACKET_SIZE 64 * 1024
 
 TcpStream::TcpStream(const std::string& server, uint16_t port) : _server(server), _port(port){
-  std::cout << "initialized Socket \n";
+  spdlog::info("initialized Socket \n");
   _sd = socket(AF_INET, SOCK_STREAM, 0);
   if(_sd < 0){
     throw;
