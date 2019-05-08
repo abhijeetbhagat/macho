@@ -4,7 +4,7 @@ LDFLAGS = -shared
 
 TARGET = macho.so
 SOURCES = $(shell echo src/*.cpp)
-HEADERS = $(shell echo include/*.h)
+HEADERS = $(shell echo include/*.h third_party/include/spdlog/*.h)
 OBJECTS = $(SOURCES:.cpp=.o)
 
 all: $(TARGET)
