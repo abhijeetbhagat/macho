@@ -1,6 +1,6 @@
 #ifndef _RTSPCONNECTION_H_
 #define _RTSPCONNECTION_H_
-#include "UdpSocket.h"
+#include "TcpStream.h"
 
 class RTSPConnection{
   public:
@@ -9,7 +9,7 @@ class RTSPConnection{
     void options();
 
   private:
-    UdpSocket _socket;
+    TcpStream _stream;
     std::string _server;
     int16_t _port;
 };
