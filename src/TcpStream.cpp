@@ -7,12 +7,11 @@
 #define MAX_TCP_PACKET_SIZE 64 * 1024
 
 TcpStream::TcpStream(const std::string& server, uint16_t port) : _server(server), _port(port){
-  spdlog::info("initialized Socket \n");
   _sd = socket(AF_INET, SOCK_STREAM, 0);
   if(_sd < 0){
     throw;
   } else {
-    std::cout << "Socket initialized\n";
+     SPDLOG_DEBUG("Socket initialized\n");
   }
 }
 
@@ -45,13 +44,13 @@ void TcpStream::open() {
   addr.sin_family = AF_INET;
   addr.sin_port = htons(_port);
   inet_pton(AF_INET, _server.c_str(), &addr.sin_addr);
-  std::cout << "Connecting to the remote server..." << _server << ' ' << _port << "\n";
+  SPDLOG_INFO("Connecting to the remote server...{0} {1}\n",  _server, _port);
 
   if(connect(_sd, (sockaddr*)&addr, (socklen_t)sizeof addr) < 0){
-    std::cout << "Error connecting\n";
+    SPDLOG_INFO("Error connecting\n");
     throw;
   } else {
-    std::cout << "Connected!\n";
+    SPDLOG_INFO("Connected!\n");
   }
 }
 
