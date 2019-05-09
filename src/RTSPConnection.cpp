@@ -11,7 +11,7 @@ RTSPConnection::RTSPConnection(const std::string& server, uint16_t port) : _serv
 RTSPConnection::~RTSPConnection(){
 }
 
-void RTSPConnection::options(){
+void RTSPConnection::send(const Request& request){
   gsl::span<const char> command = "OPTIONS rtsp://184.72.239.149/vod/mp4:BigBuckBunny_175k.mov RTSP/1.0\r\nCSeq: 2\r\n\r\n";
   _stream.send_data(as_bytes(command));
   std::vector<char> output;
