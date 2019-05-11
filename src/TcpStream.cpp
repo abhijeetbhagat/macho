@@ -55,6 +55,7 @@ void TcpStream::open() {
 }
 
 void TcpStream::receive(std::vector<char> &buf){
+  SPDLOG_INFO("Receiving data...\n");
   std::unique_ptr<char> temp(new char[MAX_TCP_PACKET_SIZE]);
   auto num_bytes = recv(_sd, temp.get(), MAX_TCP_PACKET_SIZE, 0);
   buf.resize(num_bytes);
@@ -62,6 +63,7 @@ void TcpStream::receive(std::vector<char> &buf){
 }
 
 
-void TcpStream::send_data(gsl::span<const gsl::byte> data){
-  auto num_bytes = send(_sd, data.data(), data.size(), 0);
+void TcpStream::send_data(const std::vector<char>& data){
+  SPDLOG_INFO("Sending data...\n");
+  auto num_bytes = send(_sd, &data[0], data.size(), 0);
 }

@@ -1,7 +1,9 @@
 #ifndef _ISERIALIZABLE_H_
 #define _ISERIALIZABLE_H_
 
+#include <vector>
+
 struct ISerializable{
-  virtual gsl::span<gsl::byte> to_bytes() = 0;
-}
+  virtual const std::vector<char> to_bytes() const = 0;
+};
 #endif

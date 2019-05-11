@@ -1,10 +1,12 @@
-#include "../macho/include/request.h"
+#include "../include/request.h"
 
-Request::Request(const RTSPConnection& conn) {
-  _payload = ""
+Request::Request() : _payload("") { }
+
+const std::vector<char> Request::to_bytes() const{
+  return std::vector<char>(_payload.begin(), _payload.end());
 }
 
-gsl::span<gsl::byte> Request::to_bytes(){
-  return as_bytes(_payload);
+const std::string& Request::to_string() const{
+  return _payload;
 }
 

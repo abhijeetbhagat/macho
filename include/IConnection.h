@@ -1,11 +1,14 @@
 #ifndef _ICONNECTION_H_
 #define _ICONNECTION_H_
 
+#include <string>
+
 struct IConnection{
-  virtual std::string get_server() = 0;
-  virtual uint16_t get_port() = 0;
-  virtual std::string get_url() = 0;
-  virtual uint8_t get_version() = 0;
-}
+  virtual const std::string& get_server() const = 0;
+  virtual uint16_t get_port() const = 0;
+  virtual const std::string& get_url() const = 0;
+  virtual uint8_t get_version() const = 0;
+  virtual uint8_t get_seq() const = 0;
+};
 #endif
 
