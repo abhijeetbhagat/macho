@@ -4,7 +4,7 @@
 #include <string>
 
 struct Utils{
-  static void parse_url(const std::string& url, std::string& ip, uint16_t& port);
+  static bool parse_url(const std::string& url, std::string& ip, uint16_t& port);
 };
 
 #endif

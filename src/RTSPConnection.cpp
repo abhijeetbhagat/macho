@@ -8,14 +8,12 @@ RTSPConnection::RTSPConnection(const std::string& server, uint16_t port, uint8_t
   _stream->open();
 }
 
-RTSPConnection::RTSPConnection(const std::string& url) : _url(url), _stream(nullptr){
-  //TODO abhi: remove the hardcoded values once parse_url is implemented
-  std::string server = "184.72.239.149";
-  uint16_t port = 554;
+RTSPConnection::RTSPConnection(const std::string& url) : _url(url), _version(1), _stream(nullptr){
+  std::string server = "";
+  uint16_t port;
+  Utils::parse_url(url, server, port);
   _server = server;
   _port = port;
-  _version = 1;
-  //Utils::parse_url(url, server, port);
   _stream.reset(new TcpStream(server, port));
   _stream->open();
 }
