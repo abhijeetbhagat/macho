@@ -24,5 +24,6 @@ class RTSPConnection : public IConnection {
     int16_t _port;
     uint8_t _version;
     std::string _url;
+    int _cseq;
 };
 #endif

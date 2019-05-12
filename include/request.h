@@ -4,7 +4,6 @@
 #include <vector>
 #include "RTSPConnection.h"
 #include "ISerializable.h"
-#include "gsl-lite.hpp"
 
 class RTSPConnection;
 
