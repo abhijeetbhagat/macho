@@ -1,11 +1,12 @@
 #ifndef _REQUEST_H_
 #define _REQUEST_H_
 
+#include <string>
 #include <vector>
-#include "RTSPConnection.h"
-#include "ISerializable.h"
+//#include "RTSPConnection.h"
+#include "../ISerializable.h"
 
-class RTSPConnection;
+//class RTSPConnection;
 
 class Request : public ISerializable {
   protected:

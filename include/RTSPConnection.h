@@ -1,7 +1,7 @@
 #ifndef _RTSPCONNECTION_H_
 #define _RTSPCONNECTION_H_
 #include "TcpStream.h"
-#include "request.h"
+#include "requests/request.h"
 #include "IConnection.h"
 
 class Request;

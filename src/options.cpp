@@ -1,4 +1,4 @@
-#include "../include/options.h"
+#include "../include/requests/options.h"
 #include "../third_party/include/spdlog/spdlog.h"
 
 Options::Options(const IConnection& conn){
