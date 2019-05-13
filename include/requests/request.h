@@ -3,10 +3,8 @@
 
 #include <string>
 #include <vector>
-//#include "RTSPConnection.h"
 #include "../ISerializable.h"
 
-//class RTSPConnection;
 
 class Request : public ISerializable {
   protected:

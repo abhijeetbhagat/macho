@@ -14,7 +14,7 @@ all: $(TARGET)
 clean:
 	rm -f $(OBJECTS) $(TARGET)
 
-%.o : %.cpp 
+%.o : %.cpp
 	g++ $(FLAGS) $(CFLAGS) -I$(HEADERS) -I$(REQUESTS_HEADERS) -c $< -o $@
 
 $(TARGET): $(OBJECTS)
