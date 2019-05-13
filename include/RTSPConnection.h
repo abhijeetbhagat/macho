@@ -12,6 +12,7 @@ class RTSPConnection : public IConnection {
     RTSPConnection(const std::string& url);
     ~RTSPConnection();
     void send(const Request& request);
+    void receive(std::vector<char>& response);
     virtual const std::string& get_server() const;
     virtual uint16_t get_port() const;
     virtual const std::string& get_url() const;

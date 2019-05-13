@@ -22,11 +22,13 @@ RTSPConnection::~RTSPConnection(){ }
 void RTSPConnection::send(const Request& request){
   SPDLOG_INFO("request is {}\n", request.to_string());
   _stream->send_data(request.to_bytes());
-  std::vector<char> output;
-  _stream->receive(output);
-  std::string out(output.begin(), output.end());
-  SPDLOG_INFO("OPTIONS response: {}\n", out);
   _cseq++;
+}
+
+void RTSPConnection::receive(std::vector<char>& response){
+  _stream->receive(response);
+  std::string out(response.begin(), response.end());
+  SPDLOG_INFO("response: {}\n", out);
 }
 
 const std::string& RTSPConnection::get_server() const{
