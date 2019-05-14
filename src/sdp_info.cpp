@@ -42,8 +42,23 @@ SDPInfo::SDPInfo(const std::string& data) : str(data){
     if(it->find("Session") != std::string::npos){
       int semi_colon = it->find(';');
       session = it->substr(9, semi_colon - 9);
+      next = std::next(it, 1);
+      break;
     }
     it++;
   }
   SPDLOG_INFO("session is {}\n", session);
+
+  while(next != sdp_lines.end()){
+    if(next->find("a=control:*") != std::string::npos){
+      it = std::next(next, 4);
+      audio_track.track_id = it->substr(10);
+      next = std::next(it, 7);
+      video_track.track_id = next->substr(10);
+      break;
+    }
+    next++;
+  }
+  SPDLOG_INFO("AudioTrack track_id is {}\n", audio_track.track_id);
+  SPDLOG_INFO("VideoTrack track_id is {}\n", video_track.track_id);
 }

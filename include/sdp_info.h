@@ -39,15 +39,19 @@ struct SDPInfo{
   SDPInfo(const std::string& data);
   struct AudioTrack{
     int rtp_type;
+    std::string track_id;
   };
 
   struct VideoTrack{
     int rtp_type;
+    std::string track_id;
   };
 
   std::string base_url;
   std::string session;
   std::string str;
+  AudioTrack audio_track;
+  VideoTrack video_track;
 };
 
 #endif
