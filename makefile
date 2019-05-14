@@ -3,7 +3,7 @@ CFLAGS = -fPIC -g
 LDFLAGS = -shared
 
 TARGET = macho.so
-SOURCES = $(shell echo src/*.cpp)
+SOURCES = $(shell echo src/*.cpp) $(shell echo src/requests/*.cpp)
 #HEADERS = $(shell echo include/*.h third_party/include/spdlog/*.h third_party/include/)
 HEADERS = third_party/include/
 REQUESTS_HEADERS = include/requests
