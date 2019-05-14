@@ -3,6 +3,7 @@
 #include "TcpStream.h"
 #include "requests/request.h"
 #include "IConnection.h"
+#include "../third_party/include/spdlog/spdlog.h"
 
 class Request;
 
@@ -12,7 +13,15 @@ class RTSPConnection : public IConnection {
     RTSPConnection(const std::string& url);
     ~RTSPConnection();
     void send(const Request& request);
-    void receive(std::vector<char>& response);
+    template<class T = std::string>
+      T receive(/*std::vector<char>& response*/)
+    {
+      std::vector<char> response;
+      _stream->receive(response);
+      std::string out(response.begin(), response.end());
+      SPDLOG_INFO("response: {}\n", out);
+      return T(out);
+    }
     virtual const std::string& get_server() const;
     virtual uint16_t get_port() const;
     virtual const std::string& get_url() const;

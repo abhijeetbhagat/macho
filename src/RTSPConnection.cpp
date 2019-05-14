@@ -1,7 +1,6 @@
 #include "../include/RTSPConnection.h"
 #include <iostream>
 #include "../include/utils.h"
-#include "../third_party/include/spdlog/spdlog.h"
 
 RTSPConnection::RTSPConnection(const std::string& server, uint16_t port, uint8_t version) : _server(server), _port(port), _version(version), _cseq(1), _stream(new TcpStream(server, port)), _url(""){
   _stream->open();
@@ -25,11 +24,14 @@ void RTSPConnection::send(const Request& request){
   _cseq++;
 }
 
-void RTSPConnection::receive(std::vector<char>& response){
+/*template<class T>
+T RTSPConnection::receive(/*std::vector<char>& response){
+  std::vector<char>& response;
   _stream->receive(response);
   std::string out(response.begin(), response.end());
   SPDLOG_INFO("response: {}\n", out);
-}
+  return T(out);
+}*/
 
 const std::string& RTSPConnection::get_server() const{
   return _server;
