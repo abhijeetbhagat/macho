@@ -2,11 +2,11 @@
 #include <iostream>
 #include "../include/utils.h"
 
-RTSPConnection::RTSPConnection(const std::string& server, uint16_t port, uint8_t version) : _server(server), _port(port), _version(version), _cseq(1), _stream(new TcpStream(server, port)), _url(""){
+RTSPConnection::RTSPConnection(const std::string& server, uint16_t port, uint8_t version) : _server(server), _port(port), _version(version), _cseq(1), _stream(new TcpStream(server, port)), _url(""), _session(""){
   _stream->open();
 }
 
-RTSPConnection::RTSPConnection(const std::string& url) : _url(url), _version(1), _cseq(1), _stream(nullptr){
+RTSPConnection::RTSPConnection(const std::string& url) : _url(url), _version(1), _cseq(1), _stream(nullptr), _session(""){
   std::string server = "";
   uint16_t port;
   Utils::parse_url(url, server, port);
@@ -51,4 +51,12 @@ uint8_t RTSPConnection::get_version() const{
 
 uint8_t RTSPConnection::get_seq() const{
   return _cseq;
+}
+
+void RTSPConnection::set_session(const std::string& session){
+  _session = session;
+}
+
+const std::string& RTSPConnection::get_session() const{
+  return _session;
 }

@@ -2,6 +2,7 @@
 #define _SDP_INFO_H
 
 #include <string>
+#include "utils.h"
 /*
 [2019-05-14 08:17:43.132] [info] [RTSPConnection.cpp:31] response: RTSP/1.0 200 OK
 CSeq: 2
@@ -38,20 +39,36 @@ a=control:trackID=2
 struct SDPInfo{
   SDPInfo(const std::string& data);
   struct AudioTrack{
+    Utils::AudioCodec codec;
     int rtp_type;
     std::string track_id;
   };
 
   struct VideoTrack{
+    Utils::VideoCodec codec;
     int rtp_type;
     std::string track_id;
   };
 
-  std::string base_url;
-  std::string session;
-  std::string str;
-  AudioTrack audio_track;
-  VideoTrack video_track;
+  inline const std::string& get_audio_url() const{
+    return base_url + audio_track.track_id;
+  }
+
+  inline const std::string& get_video_url() const{
+    return base_url + video_track.track_id;
+  }
+
+  inline const std::string& get_session() const{
+    return session;
+  }
+
+  private:
+    std::string base_url;
+    std::string session;
+    std::string str;
+    AudioTrack audio_track;
+    VideoTrack video_track;
+
 };
 
 #endif

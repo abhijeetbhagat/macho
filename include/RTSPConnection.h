@@ -27,6 +27,8 @@ class RTSPConnection : public IConnection {
     virtual const std::string& get_url() const;
     virtual uint8_t get_version() const;
     virtual uint8_t get_seq() const;
+    virtual void set_session(const std::string& session);
+    virtual const std::string& get_session() const;
 
   private:
     std::unique_ptr<TcpStream> _stream;
@@ -35,5 +37,6 @@ class RTSPConnection : public IConnection {
     uint8_t _version;
     std::string _url;
     int _cseq;
+    std::string _session;
 };
 #endif

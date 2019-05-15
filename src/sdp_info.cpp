@@ -4,6 +4,8 @@
 #include <vector>
 #include "../third_party/include/spdlog/spdlog.h"
 
+//TODO abhi: The following SDP parsing is based on what was observed in VLC with
+//the public url. If that SDP isn't standard, then we have a problem.
 SDPInfo::SDPInfo(const std::string& data) : str(data){
   SPDLOG_INFO("constructing sdp info... \n");
   std::istringstream stream(str);

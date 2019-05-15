@@ -1,8 +1,8 @@
 #include "../../include/requests/setup.h"
 
-Setup::Setup(const IConnection& conn){
+Setup::Setup(const IConnection& conn, const std::string& url){
   //TODO implement setup
-  _payload = "SETUP " + conn.get_url();
+  _payload = "SETUP " + url + " RTSP/" + std::to_string(conn.get_version()) + ".0\r\nCSeq: " + std::to_string(conn.get_seq()) + "\r\nUser-agent: macho\r\nSession: " + conn.get_session() + "\r\nRange: npt=0.000-\r\n\r\n" ;
 }
 
     /*Request: SETUP rtsp://184.72.239.149/vod/mp4:BigBuckBunny_175k.mov/trackID=1 RTSP/1.0\r\n

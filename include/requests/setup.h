@@ -6,7 +6,7 @@
 #include "request.h"
 
 struct Setup : public Request{
-  Setup(const IConnection& conn);
+  Setup(const IConnection& conn, const std::string& url);
 };
 
 #endif

@@ -1,6 +1,7 @@
 #include "../include/RTSPConnection.h"
 #include "../include/requests/options.h"
 #include "../include/requests/describe.h"
+#include "../include/requests/setup.h"
 #include "../include/gsl-lite.hpp"
 #include "../include/sdp_info.h"
 //#include <vector>
@@ -16,7 +17,12 @@ int main(){
 
   Describe describe{conn};
   conn.send(describe);
-  //output.clear(); 
+  //output.clear();
   const SDPInfo sdp = conn.receive<SDPInfo>();
-  
+
+  conn.set_session(sdp.get_session());
+  Setup audio_setup{conn, sdp.get_audio_url()};
+  Setup video_setup{conn, sdp.get_video_url()};
+  conn.send(audio_setup);
+  conn.send(video_setup);
 }
