@@ -3,6 +3,7 @@
 
 #include <string>
 #include "utils.h"
+#include "../third_party/include/spdlog/spdlog.h"
 /*
 [2019-05-14 08:17:43.132] [info] [RTSPConnection.cpp:31] response: RTSP/1.0 200 OK
 CSeq: 2
@@ -42,19 +43,24 @@ struct SDPInfo{
     Utils::AudioCodec codec;
     int rtp_type;
     std::string track_id;
+
+    AudioTrack() : track_id(""){}
   };
 
   struct VideoTrack{
     Utils::VideoCodec codec;
     int rtp_type;
     std::string track_id;
+
+    VideoTrack() : track_id(""){}
   };
 
-  inline const std::string& get_audio_url() const{
-    return base_url + audio_track.track_id;
+  inline const std::string get_audio_url() const{
+    SPDLOG_INFO("audio url - {}", base_url + audio_track.track_id);
+    return  base_url + audio_track.track_id;
   }
 
-  inline const std::string& get_video_url() const{
+  inline const std::string get_video_url() const{
     return base_url + video_track.track_id;
   }
 
