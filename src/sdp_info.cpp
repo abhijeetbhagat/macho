@@ -6,7 +6,7 @@
 
 //TODO abhi: The following SDP parsing is based on what was observed in VLC with
 //the public url. If that SDP isn't standard, then we have a problem.
-SDPInfo::SDPInfo(const std::string& data) : str(data){
+SDPInfo::SDPInfo(const std::string& data) : str(data), audio_track(AudioTrack()), video_track(VideoTrack()){
   SPDLOG_INFO("constructing sdp info... \n");
   std::istringstream stream(str);
   std::string s;

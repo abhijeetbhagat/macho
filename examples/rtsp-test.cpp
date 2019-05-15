@@ -4,6 +4,7 @@
 #include "../include/requests/setup.h"
 #include "../include/gsl-lite.hpp"
 #include "../include/sdp_info.h"
+#include "../third_party/include/spdlog/spdlog.h"
 //#include <vector>
 
 int main(){
