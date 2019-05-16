@@ -13,6 +13,7 @@ SDPInfo::SDPInfo(const std::string& data) : str(data), audio_track(AudioTrack())
   int content_length = 0;
   std::vector<std::string> sdp_lines;
   while(getline(stream, s, '\n')){
+    s = s.erase(s.find_last_not_of('\r')+1);
     sdp_lines.push_back(s);
   }
   SPDLOG_INFO("sdp lines pushed \n");

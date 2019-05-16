@@ -56,7 +56,8 @@ struct SDPInfo{
   };
 
   inline const std::string get_audio_url() const{
-    SPDLOG_INFO("audio url - {}", base_url + audio_track.track_id);
+    SPDLOG_INFO("base url - {}\n", base_url );
+    SPDLOG_INFO("audio_track.track_id - {\n}", audio_track.track_id);
     return  base_url + audio_track.track_id;
   }
 

@@ -3,7 +3,7 @@
 
 Setup::Setup(const IConnection& conn, const std::string& url){
   //TODO implement setup
-  SPDLOG_INFO("url is {}", url);
+  //SPDLOG_INFO("url is {}", url);
   _payload = "SETUP " + url + " RTSP/" + std::to_string(conn.get_version()) + ".0\r\nCSeq: " + std::to_string(conn.get_seq()) + "\r\nUser-agent: macho\r\nSession: " + conn.get_session() + "\r\nRange: npt=0.000-\r\n\r\n" ;
 }
 
