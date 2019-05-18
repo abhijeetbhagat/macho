@@ -5,7 +5,7 @@
 #include<netdb.h>
 #include<arpa/inet.h>
 #include<netinet/in.h>
-#include "gsl-lite.hpp"
+#include "../gsl-lite.hpp"
 
 class UdpSocket {
   public:

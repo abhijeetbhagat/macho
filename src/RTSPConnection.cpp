@@ -1,6 +1,6 @@
-#include "../include/RTSPConnection.h"
 #include <iostream>
-#include "../include/utils.h"
+#include "../include/RTSPConnection.h"
+#include "../include/utils/utils.h"
 
 RTSPConnection::RTSPConnection(const std::string& server, uint16_t port, uint8_t version) : _server(server), _port(port), _version(version), _cseq(1), _stream(new TcpStream(server, port)), _url(""), _session(""){
   _stream->open();

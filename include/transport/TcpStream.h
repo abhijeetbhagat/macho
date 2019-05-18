@@ -4,7 +4,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <vector>
-#include "gsl-lite.hpp"
+#include "../gsl-lite.hpp"
 
 class TcpStream{
   public:

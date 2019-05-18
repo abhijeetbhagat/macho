@@ -1,8 +1,9 @@
-#include "../include/TcpStream.h"
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <iostream>
-#include "../third_party/include/spdlog/spdlog.h"
+#include "../../include/transport/TcpStream.h"
+#include "../../third_party/include/spdlog/spdlog.h"
+
 #define BACKLOG 128 //standard
 #define MAX_TCP_PACKET_SIZE 64 * 1024
 

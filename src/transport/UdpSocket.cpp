@@ -1,11 +1,12 @@
-#include "../include/UdpSocket.h"
 #include <unistd.h>
 #include <iostream>
 #include <cstring>
+#include "../../include/transport/UdpSocket.h"
+#include "../../third_party/include/spdlog/spdlog.h"
+
 #define MAX_UDP_PACKET_SIZE 64 * 1024
 
 UdpSocket::UdpSocket(){
-  std::cout << "UdpSocket ctor called\n";
   _sd = socket(AF_INET, SOCK_DGRAM, 0);
   if(_sd < 0) {
     throw;
@@ -16,7 +17,7 @@ UdpSocket::~UdpSocket(){
   close(_sd);
 }
 
-void UdpSocket::send(gsl::span<const gsl::byte> data){ 
+void UdpSocket::send(gsl::span<const gsl::byte> data){
   int result = sendto(_sd,
                       data.data(),
                       data.size(),
@@ -24,7 +25,7 @@ void UdpSocket::send(gsl::span<const gsl::byte> data){
                       (sockaddr*)&_remoteip,
                       sizeof _remoteip);
   if(result == -1){
-    std::cout << "Error sending data\n";
+     SPDLOG_INFO("Error sending data\n");
   }
 }
 
@@ -44,7 +45,7 @@ void UdpSocket::send_to(gsl::span<const gsl::byte> data, const std::string& ip, 
 std::vector<gsl::byte> UdpSocket::recv(){
   std::vector<gsl::byte> data(MAX_UDP_PACKET_SIZE);
   recvfrom(_sd, data.data(), MAX_UDP_PACKET_SIZE, 0, nullptr, 0);
-  std::cout << "socket recvd " << data.size() << " bytes\n";
+  SPDLOG_INFO("socket recvd {} bytes", data.size());
   return data;
 }
 
@@ -72,7 +73,7 @@ void UdpSocket::bind_to(const std::string& ip, uint16_t port) {
   _myip.sin_port = htons(port);
   inet_pton(AF_INET, ip.c_str(), &_myip.sin_addr);
   if(bind(_sd, (sockaddr*)&_myip, sizeof _myip) == -1){
-    std::cout << "Error naming the socket (bind).\n";
+    SPDLOG_INFO("Error naming the socket (bind).\n");
   }
 }
 
@@ -83,7 +84,7 @@ int UdpSocket::connect_to(const std::string& ip, uint16_t port) {
   inet_pton(AF_INET, ip.c_str(), &_remoteip.sin_addr);
   int result = connect(_sd, (sockaddr*)&_remoteip, sizeof _remoteip);
   if(result == -1){
-    std::cout << "Error connect to remote socket.\n";
+    SPDLOG_INFO("Error connect to remote socket.\n");
   }
   return result;
 }
