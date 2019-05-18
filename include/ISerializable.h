@@ -3,7 +3,7 @@
 
 #include <vector>
 
-struct ISerializable{
+struct ISerializable {
   virtual const std::vector<char> to_bytes() const = 0;
 };
 #endif

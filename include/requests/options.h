@@ -4,8 +4,8 @@
 #include "../IConnection.h"
 #include "request.h"
 
-struct Options : public Request{
-  Options(const IConnection& conn);
+struct Options : public Request {
+  Options(const IConnection &conn);
 };
 
 #endif

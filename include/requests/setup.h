@@ -5,8 +5,8 @@
 #include "../IConnection.h"
 #include "request.h"
 
-struct Setup : public Request{
-  Setup(const IConnection& conn, const std::string& url);
+struct Setup : public Request {
+  Setup(const IConnection &conn, const std::string &url);
 };
 
 #endif

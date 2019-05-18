@@ -4,8 +4,8 @@
 #include "../IConnection.h"
 #include "request.h"
 
-struct Describe : public Request{
-  Describe(const IConnection& conn);
+struct Describe : public Request {
+  Describe(const IConnection &conn);
 };
 
 #endif

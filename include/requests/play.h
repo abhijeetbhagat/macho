@@ -4,8 +4,8 @@
 #include "../IConnection.h"
 #include "request.h"
 
-struct Play : public Request{
-  Play(const IConnection& conn, const std::string& url);
+struct Play : public Request {
+  Play(const IConnection &conn, const std::string &url);
 };
 
 #endif
