@@ -1,5 +1,5 @@
-#ifndef _DESCRIBE_H_
-#define _DESCRIBE_H_
+#ifndef _PLAY_H_
+#define _PLAY_H_
 
 #include "../IConnection.h"
 #include "request.h"
