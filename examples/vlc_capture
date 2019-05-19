@@ -1,0 +1,29 @@
+socket(PF_LOCAL, SOCK_STREAM|SOCK_CLOEXEC, 0) = 5
+connect(5, {sa_family=AF_LOCAL, sun_path=@"/tmp/.X11-unix/X0"}, 20) = 0
+recvfrom(5, 0xfd4920, 8, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+recvfrom(5, "\1\0\v\0\0\0\233\1", 8, 0, NULL, NULL) = 8
+recvfrom(5, "`\35\264\0\0\0\300\4\377\377\37\0\0\1\0\0\24\0\377\377\1\7\0\0  \10\377\0\0\0\0"..., 1644, 0, NULL, NULL) = 1644
+recvmsg(5, {msg_name(0)=NULL, msg_iov(1)=[{"\1\0\1\0\0\0\0\0e\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 4096}], msg_controllen=0, msg_flags=0}, 0) = 32
+recvmsg(5, {msg_name(0)=NULL, msg_iov(1)=[{"\1\10\2\0\21\0\0\0\37\0\0\0\0\0\0\0B\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 4096}], msg_controllen=0, msg_flags=0}, 0) = 100
+recvmsg(5, {msg_name(0)=NULL, msg_iov(1)=[{"\1\0\3\0\0\0\0\0\303\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 4096}], msg_controllen=0, msg_flags=0}, 0) = 32
+recvmsg(5, {msg_name(0)=NULL, msg_iov(1)=[{"\1\10\4\0\1\0\0\0\37\0\0\0\0\0\0\0\2\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 4096}], msg_controllen=0, msg_flags=0}, 0) = 36
+recvmsg(5, {msg_name(0)=NULL, msg_iov(1)=[{"\1\0\5\0\0\0\0\0f\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 4096}], msg_controllen=0, msg_flags=0}, 0) = 32
+recvmsg(5, {msg_name(0)=NULL, msg_iov(1)=[{"\1\0\6\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 4096}], msg_controllen=0, msg_flags=0}, 0) = 32
+recvmsg(5, {msg_name(0)=NULL, msg_iov(1)=[{"\1\0\7\0\0\0\0\0g\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 4096}], msg_controllen=0, msg_flags=0}, 0) = 32
+recvmsg(5, {msg_name(0)=NULL, msg_iov(1)=[{"\1\0\10\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 4096}], msg_controllen=0, msg_flags=0}, 0) = 32
+recvmsg(5, {msg_name(0)=NULL, msg_iov(1)=[{"\1\0\t\0\0\0\0\0h\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 4096}], msg_controllen=0, msg_flags=0}, 0) = 32
+recvmsg(5, {msg_name(0)=NULL, msg_iov(1)=[{"\1\10\n\0\200\0\0\0\37\0\0\0\0\0\0\0\0\2\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 4096}], msg_controllen=0, msg_flags=0}, 0) = 544
+socket(PF_LOCAL, SOCK_STREAM|SOCK_CLOEXEC, 0) = 5
+connect(5, {sa_family=AF_LOCAL, sun_path="/run/user/1001/pulse/native"}, 110) = 0
+socket(PF_LOCAL, SOCK_STREAM|SOCK_CLOEXEC, 0) = 9
+connect(9, {sa_family=AF_LOCAL, sun_path=@"/tmp/.X11-unix/X0"}, 20) = 0
+recvfrom(9, 0xfc2700, 8, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+recvfrom(9, "\1\0\v\0\0\0\233\1", 8, 0, NULL, NULL) = 8
+recvfrom(9, "`\35\264\0\0\0\300\4\377\377\37\0\0\1\0\0\24\0\377\377\1\7\0\0  \10\377\0\0\0\0"..., 1644, 0, NULL, NULL) = 1644
+socket(PF_LOCAL, SOCK_STREAM|SOCK_CLOEXEC, 0) = 11
+connect(11, {sa_family=AF_LOCAL, sun_path=@"/tmp/dbus-3xE0sJP9YY"}, 23) = 0
+recvmsg(11, {msg_name(0)=NULL, msg_iov(1)=[{"l\2\1\1\v\0\0\0\1\0\0\0=\0\0\0\6\1s\0\6\0\0\0:1.162\0\0"..., 2048}], msg_controllen=0, msg_flags=MSG_CMSG_CLOEXEC}, MSG_CMSG_CLOEXEC) = 262
+recvmsg(11, 0x7ffddab9cf60, MSG_CMSG_CLOEXEC) = -1 EAGAIN (Resource temporarily unavailable)
+recvmsg(11, {msg_name(0)=NULL, msg_iov(1)=[{"l\4\1\1\37\0\0\0\3\0\0\0\215\0\0\0\1\1o\0\25\0\0\0/org/fre"..., 2048}], msg_controllen=0, msg_flags=MSG_CMSG_CLOEXEC}, MSG_CMSG_CLOEXEC) = 275
+recvmsg(11, 0x7ffddab9d010, MSG_CMSG_CLOEXEC) = -1 EAGAIN (Resource temporarily unavailable)
++++ exited with 0 +++

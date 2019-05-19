@@ -1,5 +1,5 @@
 
-FLAGS = -std=c++11
+FLAGS = -std=c++11 -pthread
 CFLAGS = -fPIC -g
 LDIR = ../
 DEP = ../macho.so
