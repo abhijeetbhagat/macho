@@ -10,6 +10,8 @@ UdpSocket::UdpSocket() {
   _sd = socket(AF_INET, SOCK_DGRAM, 0);
   if (_sd < 0) {
     throw;
+  } else {
+    SPDLOG_INFO("Udp socket opened...\n");
   }
 }
 
@@ -21,6 +23,16 @@ void UdpSocket::send(gsl::span<const gsl::byte> data) {
   if (result == -1) {
     SPDLOG_INFO("Error sending data\n");
   }
+}
+
+void UdpSocket::send_to(const std::string &ip, uint16_t port,
+                        const std::string &data) {
+  sockaddr_in remoteip;
+  remoteip.sin_family = AF_INET;
+  remoteip.sin_port = htons(port);
+  inet_pton(AF_INET, ip.c_str(), &remoteip.sin_addr);
+  sendto(_sd, data.c_str(), data.size(), 0, (sockaddr *)&remoteip,
+         sizeof remoteip);
 }
 
 void UdpSocket::send_to(gsl::span<const gsl::byte> data, const std::string &ip,
@@ -41,6 +53,7 @@ std::vector<gsl::byte> UdpSocket::recv() {
 }
 
 void UdpSocket::recv(std::string &buf) {
+  SPDLOG_INFO("waiting to recv data..\n");
   std::unique_ptr<char[]> cbuf(new char[MAX_UDP_PACKET_SIZE]);
   auto num_bytes =
       recvfrom(_sd, cbuf.get(), MAX_UDP_PACKET_SIZE, 0, nullptr, 0);
@@ -62,9 +75,12 @@ void UdpSocket::bind_to(const std::string &ip, uint16_t port) {
   memset(&_myip, 0, sizeof _myip);
   _myip.sin_family = AF_INET;
   _myip.sin_port = htons(port);
-  inet_pton(AF_INET, ip.c_str(), &_myip.sin_addr);
+  _myip.sin_addr.s_addr = htonl(INADDR_ANY);
+  // inet_pton(AF_INET, ip.c_str(), &_myip.sin_addr);
   if (bind(_sd, (sockaddr *)&_myip, sizeof _myip) == -1) {
     SPDLOG_INFO("Error naming the socket (bind).\n");
+  } else {
+    SPDLOG_INFO("bind successfull.\n");
   }
 }
 

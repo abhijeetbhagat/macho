@@ -12,6 +12,7 @@ public:
   UdpSocket();
   ~UdpSocket();
   void send(gsl::span<const gsl::byte> data);
+  void send_to(const std::string &ip, uint16_t port, const std::string &data);
   void send_to(gsl::span<const gsl::byte> data, const std::string &ip,
                uint16_t port);
   std::vector<gsl::byte> recv();
