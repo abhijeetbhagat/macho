@@ -28,15 +28,6 @@ void RTSPConnection::send(const Request &request) {
   _cseq++;
 }
 
-/*template<class T>
-T RTSPConnection::receive(/*std::vector<char>& response){
-  std::vector<char>& response;
-  _stream->receive(response);
-  std::string out(response.begin(), response.end());
-  SPDLOG_INFO("response: {}\n", out);
-  return T(out);
-}*/
-
 const std::string &RTSPConnection::get_server() const { return _server; }
 
 uint16_t RTSPConnection::get_port() const { return _port; }
