@@ -2,6 +2,8 @@
 #define _RTPPACKET_H_
 
 #include <ostream>
+#include <vector>
+#include <memory>
 
 // TODO: will this struct work on Win too?
 // according to
@@ -15,9 +17,14 @@ struct RtpPacket {
     int cc;// : 4;
     int marker;// : 1;
     int payload_type;// : 7;
-    short seq_num;// : 16;
+    uint16_t seq_num;// : 16;
     uint32_t timestamp;
     uint32_t ssrc;
+    std::vector<uint32_t> csrcs;
+    uint16_t profile_specific_extn_id;
+    uint16_t extension_len;
+    std::unique_ptr<uint8_t[]> raw_data;
+
   } header;
 
   friend std::ostream& operator<<(std::ostream& o, const RtpPacket& packet){

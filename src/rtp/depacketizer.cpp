@@ -16,9 +16,29 @@ RtpPacket Depacketizer::parse(const std::string& buf){
   auto cc = (payload[0] & 0xf);
   auto marker = (payload[1] & 0x80) >> 7;
   auto payload_type = (payload[1] & 0x7f);
-  auto seq_num = (uint16_t)payload[2] << 8 | (uint16_t)payload[3];
+  auto seq_num = uint16_t((uint16_t)payload[2] << (uint16_t)8 | (uint16_t)payload[3]);
   auto timestamp = (uint32_t)payload[4] << 24 | (uint32_t)payload[5] << 16 | (uint32_t)payload[6] << 8 | (uint32_t)payload[7];
   auto ssrc = (uint32_t)payload[8] << 24 | (uint32_t)payload[9] << 16 | (uint32_t)payload[10] << 8 | (uint32_t)payload[11];
+
+  std::vector<uint32_t> csrcs;
+  uint32_t j = 12;
+  if(cc > 0){
+    csrcs.reserve(cc);
+    for(uint32_t i = 0; i < cc; i++){ 
+      uint32_t csrc = payload[j] << 24 | payload[++j] << 16 | payload[++j] << 8 | payload[++j];
+      csrcs.push_back(csrc);
+    }
+  }
+
+  uint16_t profile_specific_extn_id = 0;
+  uint16_t extension_len = 0;
+  if(extension > 0){
+    profile_specific_extn_id = payload[j] << 8 | payload[++j];
+    extension_len = payload[j] << 8 | payload[++j];
+  }
+
+  //std::unique_ptr<uint8_t[]> payload_data();
+  //std::copy(payload)
 
   packet.header = RtpPacket::RtpHeader{
     version = version,
@@ -29,8 +49,13 @@ RtpPacket Depacketizer::parse(const std::string& buf){
     payload_type = payload_type,
     seq_num = seq_num,
     timestamp = timestamp,
-    ssrc = ssrc
+    ssrc = ssrc,
+    csrcs = csrcs,
+    profile_specific_extn_id = profile_specific_extn_id,
+    extension_len = extension_len,
   };
+  packet.header.raw_data.reset(new uint8_t[buf.size() - j]);
+  std::copy(payload.data() + j, payload.data() + payload.size()-1, packet.header.raw_data.get());
 
   return packet;
 }
