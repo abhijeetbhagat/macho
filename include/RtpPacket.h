@@ -23,6 +23,7 @@ struct RtpPacket {
     std::vector<uint32_t> csrcs;
     uint16_t profile_specific_extn_id;
     uint16_t extension_len;
+    uint16_t payload_len;
     std::unique_ptr<uint8_t[]> raw_data;
 
   } header;
@@ -31,6 +32,12 @@ struct RtpPacket {
     o << "version: " << packet.header.version << "\npadding: " << packet.header.padding  << "\nextension: " << packet.header.extension 
       << "\ncc: " << packet.header.cc  << "\nmarker: " << packet.header.marker  << "\nptype: " << packet.header.payload_type  << "\nseq_num: " << packet.header.seq_num
       << "\ntimestamp: " << packet.header.timestamp << "\nssrc: " << packet.header.ssrc << '\n';
+    std::ios_base::fmtflags f(o.flags());
+    for(uint16_t i = 0; i < packet.header.payload_len; i ++){
+      o << std::hex << (int)packet.header.raw_data.get()[i] << ' ';
+    }
+    o.flags(f);
+    o << '\n';
     return o;
   }
 };
