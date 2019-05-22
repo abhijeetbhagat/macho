@@ -39,7 +39,7 @@ RtpPacket Depacketizer::parse(const std::string& buf){
 
   //std::unique_ptr<uint8_t[]> payload_data();
   //std::copy(payload)
-
+  uint16_t payload_len = buf.size() - j;
   packet.header = RtpPacket::RtpHeader{
     version = version,
     padding = padding,
@@ -53,9 +53,10 @@ RtpPacket Depacketizer::parse(const std::string& buf){
     csrcs = csrcs,
     profile_specific_extn_id = profile_specific_extn_id,
     extension_len = extension_len,
+    payload_len = payload_len
   };
-  packet.header.raw_data.reset(new uint8_t[buf.size() - j]);
-  std::copy(payload.data() + j, payload.data() + payload.size()-1, packet.header.raw_data.get());
+  packet.header.raw_data.reset(new uint8_t[payload_len]());
+  std::copy(payload.data() + j, payload.data() + payload.size(), packet.header.raw_data.get());
 
   return packet;
 }
