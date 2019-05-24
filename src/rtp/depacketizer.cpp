@@ -3,7 +3,7 @@
 Depacketizer::Depacketizer(){
 }
 
-RtpPacket Depacketizer::parse(const std::string& buf){
+RtpPacket Depacketizer::parse_rtp(const std::string& buf){
   RtpPacket packet;
   //The following check is only valid for embedded (interleaved) binary data
   //if(buf[0] == 0x24){ //'$' means start of packet
@@ -59,4 +59,8 @@ RtpPacket Depacketizer::parse(const std::string& buf){
   std::copy(payload.data() + j, payload.data() + payload.size(), packet.header.raw_data.get());
 
   return packet;
+}
+
+RtcpPacket Depacketizer::parse_rtcp(const std::string& data){
+
 }
