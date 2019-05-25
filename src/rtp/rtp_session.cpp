@@ -17,8 +17,11 @@ RTPSession::RTPSession(const std::string &ip, uint16_t data_port,
   _video_rtp_socket->send_to(ip, server_rtp_port, "Îúíþ");
 
   _video_rtcp_socket = std::unique_ptr<UdpSocket>(new UdpSocket());
-  _video_rtp_socket->set_blocking(false);
+  _video_rtcp_socket->set_blocking(false);
   _video_rtcp_socket->bind_to(ip, rtcp_port);
+  
+  //TODO if we dont do this, then we dont receive any packets
+  _video_rtcp_socket->send_to(ip, server_rtcp_port, "Îúíþ");
 }
 
 /*void  RTPSession::register_back(std::function<void(RTPPacket)> callback){
@@ -58,7 +61,7 @@ void RTPSession::start() {
           //TODO put this packet in a shared queue and signal a packet processor thread (producer-consumer)
           std::cout << packet;
           buffer.clear();
-        } else { //RTP socket ready to be read
+        } else { //RTCP socket ready to be read
           SPDLOG_INFO("this is an rtcp packet\n");
           _video_rtcp_socket->recv(buffer);
           auto packet = depacketizer.parse_rtcp(buffer);
