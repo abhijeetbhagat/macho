@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sys/epoll.h>
-#include <sys/select.h>
+#include <sys/poll.h>
+#include <sys/time.h>
 #include "rtp_session.h"
 #include "depacketizer.h"
 #include "../../third_party/include/spdlog/spdlog.h"
@@ -28,12 +29,32 @@ RTPSession::RTPSession(const std::string &ip, uint16_t data_port,
 void RTPSession::start() {
   std::string buffer;
   Depacketizer depacketizer;
+  /*fd_set master_set, working_set;
+  FD_ZERO(&master_set);
+  FD_ZERO(&working_set);
+  FD_SET(recv_sd, &master_set);
+  timeval timeout;
+  timeout.tv_sec = 3 * 60;
+  timeout.tv_usec = 0;
+  */
+  int recv_sd = _video_rtp_socket->get_desc();
+  pollfd pollfds[2];
+  pollfds[0].fd = recv_sd;
+  pollfds[0].events = POLLIN;
+
   while (true) {
+    //memcpy(&working_set, &master_set, sizeof master_set);
     SPDLOG_INFO("waiting for packet...\n");
-    _video_rtp_socket->recv(buffer);
-    auto packet = depacketizer.parse_rtp(buffer);
-    //TODO put this packet in a shared queue and signal a packet processor thread
-    std::cout << packet;
-    buffer.clear();
+    int rc = poll(pollfds, 1, 50000);
+    for(int i = 0; i < 1; i++){
+      //if(FD_ISSET(i, &working_set)){
+      if(pollfds[i].revents & POLLIN){
+        _video_rtp_socket->recv(buffer);
+        auto packet = depacketizer.parse_rtp(buffer);
+        //TODO put this packet in a shared queue and signal a packet processor thread
+        std::cout << packet;
+        buffer.clear();
+      }
+    }
   }
 }
