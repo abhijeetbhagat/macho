@@ -11,6 +11,7 @@ class UdpSocket {
 public:
   UdpSocket();
   ~UdpSocket();
+  void set_blocking(bool isBlocking);
   void send(gsl::span<const gsl::byte> data);
   void send_to(const std::string &ip, uint16_t port, const std::string &data);
   void send_to(gsl::span<const gsl::byte> data, const std::string &ip,

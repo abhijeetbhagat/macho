@@ -3,6 +3,7 @@
 #include <cstring>
 #include <iostream>
 #include <unistd.h>
+#include <fcntl.h>
 
 #define MAX_UDP_PACKET_SIZE 64 * 1024
 
@@ -16,6 +17,12 @@ UdpSocket::UdpSocket() {
 }
 
 UdpSocket::~UdpSocket() { close(_sd); }
+
+void UdpSocket::set_blocking(bool isBlocking){
+  int flags = fcntl(_sd, F_GETFL, 0);
+  if(!isBlocking)
+    fcntl(_sd, F_SETFL, flags | O_NONBLOCK);
+}
 
 void UdpSocket::send(gsl::span<const gsl::byte> data) {
   int result = sendto(_sd, data.data(), data.size(), 0, (sockaddr *)&_remoteip,
