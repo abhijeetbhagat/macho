@@ -24,8 +24,9 @@ public:
             std::string port_range = line.substr(12);
             auto hyphen_index = 0;
             if ((hyphen_index = port_range.find('-')) != std::string::npos) {
+              //auto semi_colon_index = port_range.find(';');
               rtp_data_port = std::stoi(port_range.substr(0, hyphen_index));
-              rtcp_data_port = std::stoi(port_range.substr(0, hyphen_index));
+              rtcp_data_port = std::stoi(port_range.substr(hyphen_index + 1));
             } else { // there's only single port?
               rtp_data_port = std::stoi(port_range.substr(12));
               rtcp_data_port = 0;
