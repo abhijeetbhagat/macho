@@ -61,6 +61,19 @@ RtpPacket Depacketizer::parse_rtp(const std::string& buf){
   return packet;
 }
 
-RtcpPacket Depacketizer::parse_rtcp(const std::string& data){
-
+RtcpPacket Depacketizer::parse_rtcp(const std::string& data){ 
+  int version = (data[0] & 0xc0) >> 6;
+  int padding = (data[0] & 0x20) >> 5;
+  int reception_report_cnt = data[0] & 0x1f;
+  int packet_type = data[1] & 0xff;
+  uint16_t packet_len = (data[2] << 8) | data[3];
+  uint32_t ssrc = (data[4] << 24) | (data[5] << 16) | (data[6] << 8) | data[9];
+  return RtcpPacket {
+    .version = version,
+    .padding = padding,
+    .reception_report_cnt = reception_report_cnt,
+    .packet_type = packet_type,
+    .packet_len = packet_len,
+    .ssrc = ssrc
+  };
 }
