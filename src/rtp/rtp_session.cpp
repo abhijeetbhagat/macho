@@ -37,23 +37,35 @@ void RTPSession::start() {
   timeout.tv_sec = 3 * 60;
   timeout.tv_usec = 0;
   */
-  int recv_sd = _video_rtp_socket->get_desc();
+  int rtp_sd = _video_rtp_socket->get_desc();
+  int rtcp_sd = _video_rtcp_socket->get_desc();
   pollfd pollfds[2];
-  pollfds[0].fd = recv_sd;
+  pollfds[0].fd = rtp_sd;
   pollfds[0].events = POLLIN;
+  pollfds[1].fd = rtcp_sd;
+  pollfds[1].events = POLLIN;
 
   while (true) {
     //memcpy(&working_set, &master_set, sizeof master_set);
     SPDLOG_INFO("waiting for packet...\n");
-    int rc = poll(pollfds, 1, 50000);
-    for(int i = 0; i < 1; i++){
+    int rc = poll(pollfds, 2, 50000);
+    for(int i = 0; i < 2; i++){
       //if(FD_ISSET(i, &working_set)){
       if(pollfds[i].revents & POLLIN){
-        _video_rtp_socket->recv(buffer);
-        auto packet = depacketizer.parse_rtp(buffer);
-        //TODO put this packet in a shared queue and signal a packet processor thread
-        std::cout << packet;
-        buffer.clear();
+        if(pollfds[i].fd == rtp_sd){ //RTP socket ready to be read
+          _video_rtp_socket->recv(buffer);
+          auto packet = depacketizer.parse_rtp(buffer);
+          //TODO put this packet in a shared queue and signal a packet processor thread (producer-consumer)
+          std::cout << packet;
+          buffer.clear();
+        } else { //RTP socket ready to be read
+          SPDLOG_INFO("this is an rtcp packet\n");
+          _video_rtcp_socket->recv(buffer);
+          auto packet = depacketizer.parse_rtcp(buffer);
+          //TODO put this packet in a shared queue and signal a packet processor thread (producer-consumer)
+          std::cout << packet;
+          buffer.clear();
+        }
       }
     }
   }
