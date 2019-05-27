@@ -1,9 +1,11 @@
 #include <iostream>
 #include <sys/epoll.h>
-#include <sys/poll.h>
+//#include <sys/poll.h>
 #include <sys/time.h>
+#include <chrono>
 #include "rtp_session.h"
 #include "depacketizer.h"
+#include "../../libcircinus/include/poller.h"
 #include "../../third_party/include/spdlog/spdlog.h"
 
 RTPSession::RTPSession(const std::string &ip, uint16_t data_port,
@@ -42,33 +44,37 @@ void RTPSession::start() {
   */
   int rtp_sd = _video_rtp_socket->get_desc();
   int rtcp_sd = _video_rtcp_socket->get_desc();
-  pollfd pollfds[2];
+  /*pollfd pollfds[2];
   pollfds[0].fd = rtp_sd;
   pollfds[0].events = POLLIN;
   pollfds[1].fd = rtcp_sd;
   pollfds[1].events = POLLIN;
+  */
+  Poller poller;
+  poller.open(2);
+  poller.subscribe(rtp_sd, Events::Read);
+  poller.subscribe(rtcp_sd, Events::Read);
 
   while (true) {
     //memcpy(&working_set, &master_set, sizeof master_set);
     SPDLOG_INFO("waiting for packet...\n");
-    int rc = poll(pollfds, 2, 50000);
+    int rc = poller.wait(std::chrono::milliseconds {50000});
+    auto ready_set = poller.ready_set();
     for(int i = 0; i < 2; i++){
       //if(FD_ISSET(i, &working_set)){
-      if(pollfds[i].revents & POLLIN){
-        if(pollfds[i].fd == rtp_sd){ //RTP socket ready to be read
-          _video_rtp_socket->recv(buffer);
-          auto packet = depacketizer.parse_rtp(buffer);
-          //TODO put this packet in a shared queue and signal a packet processor thread (producer-consumer)
-          std::cout << packet;
-          buffer.clear();
-        } else { //RTCP socket ready to be read
-          SPDLOG_INFO("this is an rtcp packet\n");
-          _video_rtcp_socket->recv(buffer);
-          auto packet = depacketizer.parse_rtcp(buffer);
-          //TODO put this packet in a shared queue and signal a packet processor thread (producer-consumer)
-          std::cout << packet;
-          buffer.clear();
-        }
+      if(ready_set[i] == rtp_sd){ //RTP socket ready to be read
+        _video_rtp_socket->recv(buffer);
+        auto packet = depacketizer.parse_rtp(buffer);
+        //TODO put this packet in a shared queue and signal a packet processor thread (producer-consumer)
+        std::cout << packet;
+        buffer.clear();
+      } else { //RTCP socket ready to be read
+        SPDLOG_INFO("this is an rtcp packet\n");
+        _video_rtcp_socket->recv(buffer);
+        auto packet = depacketizer.parse_rtcp(buffer);
+        //TODO put this packet in a shared queue and signal a packet processor thread (producer-consumer)
+        std::cout << packet;
+        buffer.clear();
       }
     }
   }
