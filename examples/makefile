@@ -1,8 +1,9 @@
 
 FLAGS = -std=c++11 -pthread
 CFLAGS = -fPIC -g
-LDIR = ../
-DEP = ../macho.so
+LMACHO_DIR = ../
+LCIRCINUS_DIR = ../libcircinus/
+DEP = ../macho.so ../libcircinus/libcircinus.so
 
 TARGET = rtsp_test
 SOURCES = rtsp-test.cpp
@@ -19,4 +20,4 @@ clean:
 	g++ $(FLAGS) $(CFLAGS) -I$(HEADERS) -I$(REQUESTS_HEADERS) -c $< -o $@
 
 $(TARGET): $(OBJECTS)
-	g++ $(FLAGS) $(CFLAGS) $(OBJECTS) -L$(LDIR) -o $(TARGET) $(DEP)
+	g++ $(FLAGS) $(CFLAGS) $(OBJECTS) -o $(TARGET) $(DEP)
