@@ -10,6 +10,8 @@ REQUESTS_HEADERS = include/requests
 TRANSPORT_HEADERS = include/transport
 RTP_HEADERS = include/rtp
 UTILS_HEADERS = include/utils
+LCIRCINUS_DIR = libcircinus/
+CIRCINUS_PUB_HEADERS = libcircinus/include/
 
 OBJECTS = $(SOURCES:.cpp=.o)
 
@@ -19,7 +21,7 @@ clean:
 	rm -f $(OBJECTS) $(TARGET)
 
 %.o : %.cpp
-	g++ $(FLAGS) $(CFLAGS) -I$(HEADERS) -I$(REQUESTS_HEADERS) -I$(TRANSPORT_HEADERS) -I$(RTP_HEADERS) -I$(UTILS_HEADERS) -c $< -o $@
+	g++ $(FLAGS) $(CFLAGS) -I$(HEADERS) -I$(REQUESTS_HEADERS) -I$(TRANSPORT_HEADERS) -I$(RTP_HEADERS) -I$(UTILS_HEADERS) -I$(CIRCINUS_PUB_HEADERS) -c $< -o $@
 
 $(TARGET): $(OBJECTS)
-	g++ $(FLAGS) $(CFLAGS) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
+	g++ $(FLAGS) $(CFLAGS) $(OBJECTS) -L$(LCIRCINUS_DIR) -lcircinus -o $(TARGET) $(LDFLAGS)
