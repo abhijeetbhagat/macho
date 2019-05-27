@@ -15,7 +15,7 @@ void Poller::close(){
 
 void Poller::subscribe(int fd, Events event){
   _pollfds[_count].fd = fd;
-  _pollfds[_count].events = event;
+  _pollfds[_count].events = static_cast<short int>(event);
   _count++;
 }
 
