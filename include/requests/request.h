@@ -11,6 +11,7 @@ protected:
 
 public:
   Request();
+  ~Request(){}
   const std::vector<char> to_bytes() const;
   const std::string &to_string() const;
 };
