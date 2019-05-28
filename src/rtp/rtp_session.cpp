@@ -59,8 +59,11 @@ void RTPSession::start() {
     //memcpy(&working_set, &master_set, sizeof master_set);
     SPDLOG_INFO("waiting for packet...\n");
     int rc = poller.wait(std::chrono::milliseconds {50000});
+    if(rc <= 0){
+      continue;
+    }
     auto ready_set = poller.ready_set();
-    for(int i = 0; i < 2; i++){
+    for(int i = 0; i < ready_set.size(); i++){
       //if(FD_ISSET(i, &working_set)){
       if(ready_set[i] == rtp_sd){ //RTP socket ready to be read
         _video_rtp_socket->recv(buffer);
