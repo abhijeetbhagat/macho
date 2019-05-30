@@ -1,12 +1,12 @@
 #include <iostream>
 #include <sys/epoll.h>
 //#include <sys/poll.h>
-#include <sys/time.h>
-#include <chrono>
-#include "rtp_session.h"
-#include "depacketizer.h"
 #include "../../libcircinus/include/poller.h"
 #include "../../third_party/include/spdlog/spdlog.h"
+#include "depacketizer.h"
+#include "rtp_session.h"
+#include <chrono>
+#include <sys/time.h>
 
 RTPSession::RTPSession(const std::string &ip, uint16_t data_port,
                        uint16_t rtcp_port, uint16_t server_rtp_port,
@@ -14,23 +14,23 @@ RTPSession::RTPSession(const std::string &ip, uint16_t data_port,
   _video_rtp_socket = std::unique_ptr<UdpSocket>(new UdpSocket());
   _video_rtp_socket->set_blocking(false);
   _video_rtp_socket->bind_to(ip, data_port);
-  
-  //TODO if we dont do this, then we dont receive any packets
+
+  // TODO if we dont do this, then we dont receive any packets
   _video_rtp_socket->send_to(ip, server_rtp_port, "Îúíþ");
 
   _video_rtcp_socket = std::unique_ptr<UdpSocket>(new UdpSocket());
   _video_rtcp_socket->set_blocking(false);
   _video_rtcp_socket->bind_to(ip, rtcp_port);
-  
-  //TODO if we dont do this, then we dont receive any packets
+
+  // TODO if we dont do this, then we dont receive any packets
   _video_rtcp_socket->send_to(ip, server_rtcp_port, "Îúíþ");
 }
 
 /*void  RTPSession::register_back(std::function<void(RTPPacket)> callback){
-  
+
 }*/
 
-//TODO this should IO multiplex rtp and rtcp sockets
+// TODO this should IO multiplex rtp and rtcp sockets
 void RTPSession::start() {
   std::string buffer;
   Depacketizer depacketizer;
@@ -56,26 +56,28 @@ void RTPSession::start() {
   poller.subscribe(rtcp_sd, Events::Read);
 
   while (true) {
-    //memcpy(&working_set, &master_set, sizeof master_set);
+    // memcpy(&working_set, &master_set, sizeof master_set);
     SPDLOG_INFO("waiting for packet...\n");
-    int rc = poller.wait(std::chrono::milliseconds {50000});
-    if(rc <= 0){
+    int rc = poller.wait(std::chrono::milliseconds{50000});
+    if (rc <= 0) {
       continue;
     }
     auto ready_set = poller.ready_set();
-    for(int i = 0; i < ready_set.size(); i++){
-      //if(FD_ISSET(i, &working_set)){
-      if(ready_set[i] == rtp_sd){ //RTP socket ready to be read
+    for (int i = 0; i < ready_set.size(); i++) {
+      // if(FD_ISSET(i, &working_set)){
+      if (ready_set[i] == rtp_sd) { // RTP socket ready to be read
         _video_rtp_socket->recv(buffer);
         auto packet = depacketizer.parse_rtp(buffer);
-        //TODO put this packet in a shared queue and signal a packet processor thread (producer-consumer)
+        // TODO put this packet in a shared queue and signal a packet processor
+        // thread (producer-consumer)
         std::cout << packet;
         buffer.clear();
-      } else { //RTCP socket ready to be read
+      } else { // RTCP socket ready to be read
         SPDLOG_INFO("this is an rtcp packet\n");
         _video_rtcp_socket->recv(buffer);
         auto packet = depacketizer.parse_rtcp(buffer);
-        //TODO put this packet in a shared queue and signal a packet processor thread (producer-consumer)
+        // TODO put this packet in a shared queue and signal a packet processor
+        // thread (producer-consumer)
         std::cout << packet;
         buffer.clear();
       }

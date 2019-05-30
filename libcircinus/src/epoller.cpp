@@ -1,4 +1,3 @@
 #include "../include/epoller.h"
 
-EPoller::Epoller(){
-}
+EPoller::Epoller() {}

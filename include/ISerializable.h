@@ -4,7 +4,7 @@
 #include <vector>
 
 struct ISerializable {
-  virtual ~ISerializable(){}
+  virtual ~ISerializable() {}
   virtual const std::vector<char> to_bytes() const = 0;
 };
 #endif

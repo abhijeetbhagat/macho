@@ -1,9 +1,9 @@
 #include "../../include/transport/UdpSocket.h"
 #include "../../third_party/include/spdlog/spdlog.h"
 #include <cstring>
+#include <fcntl.h>
 #include <iostream>
 #include <unistd.h>
-#include <fcntl.h>
 
 #define MAX_UDP_PACKET_SIZE 64 * 1024
 
@@ -18,9 +18,9 @@ UdpSocket::UdpSocket() {
 
 UdpSocket::~UdpSocket() { close(_sd); }
 
-void UdpSocket::set_blocking(bool isBlocking){
+void UdpSocket::set_blocking(bool isBlocking) {
   int flags = fcntl(_sd, F_GETFL, 0);
-  if(!isBlocking)
+  if (!isBlocking)
     fcntl(_sd, F_SETFL, flags | O_NONBLOCK);
 }
 

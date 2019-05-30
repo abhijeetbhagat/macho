@@ -4,7 +4,7 @@
 #include <string>
 
 struct IConnection {
-  virtual ~IConnection(){}
+  virtual ~IConnection() {}
   virtual const std::string &get_server() const = 0;
   virtual uint16_t get_port() const = 0;
   virtual const std::string &get_url() const = 0;

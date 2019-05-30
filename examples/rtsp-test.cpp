@@ -39,7 +39,7 @@ int main() {
   });
 
   // give enough time for the rtp socket to open and start listening
-  //std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+  // std::this_thread::sleep_for(std::chrono::milliseconds(3000));
   Play play{conn, sdp.get_video_url()};
   conn.send(play);
   conn.receive();
