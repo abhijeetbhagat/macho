@@ -18,7 +18,7 @@ public:
   int wait(const std::chrono::milliseconds &) = 0;
 
 private:
-  int _epollfd;
+  int _epfd;
   std::unique_ptr<epoll_event[]> _events;
 };
 
