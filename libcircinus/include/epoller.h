@@ -16,9 +16,10 @@ public:
   void unsubscribe() = 0;
   int wait() { return wait(std::chrono::milliseconds::max()); }
   int wait(const std::chrono::milliseconds &) = 0;
+  std::vector<int> ready_set();
 
 private:
-  int _epfd;
+  int _epfd, _events_cnt;
   std::unique_ptr<epoll_event[]> _events;
 };
 

@@ -2,6 +2,7 @@
 #define _ABSTRACTIOMUXER_H_
 
 #include <chrono>
+#include <vector>
 
 enum class Events { Read = 0x0001, Write = 0x0004 };
 
@@ -15,6 +16,8 @@ public:
   virtual void unsubscribe() = 0;
   virtual int wait() { return wait(std::chrono::milliseconds::max()); }
   virtual int wait(const std::chrono::milliseconds &) = 0;
+  virtual std::vector<int> ready_set();
+
 };
 
 #endif

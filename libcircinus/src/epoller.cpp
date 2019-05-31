@@ -1,8 +1,9 @@
 #include "../include/epoller.h"
 #include <chrono>
 #include <iostream>
+#include <vector>
 
-EPoller::EPoller() : _epfd(-1), _events(nullptr) {}
+EPoller::EPoller() : _epfd(-1), _events(nullptr), _events_cnt(0) {}
 
 void EPoller::open(uint32_t size){
   _events.reset(new epoll_event[size]);
@@ -29,15 +30,21 @@ void EPoller::unsubscribe(){
 
 int EPoller::wait(const std::chrono::milliseconds &duration){
   int timeout = duration.count();
-  int rc = 0;
   while (true) {
-    rc = epoll_wait(_epfd, _events.get(), 2, timeout);
-    if (rc < 0) {
+    _events_cnt = epoll_wait(_epfd, _events.get(), 2, timeout);
+    if (_events_cnt < 0) {
       std::cout << "Error with epol\n";
     } else {
       break;
     }
   }
-  return rc;
+  return _events_cnt;
 }
 
+std::vector<int> EPoller::ready_set() {
+  std::vector<int> set;
+  for (int i = 0; i < _events_cnt; i++) {
+    set.push_back(i);
+  }
+  return set;
+}
