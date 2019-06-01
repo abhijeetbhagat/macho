@@ -14,6 +14,8 @@ Learn software engineering - language, tools, low-level stuff, protocols, etc. w
 #include "../include/rtp/rtp_session.h"
 #include "../include/sdp_info.h"
 #include "../include/server_ep.h"
+#include "../libcircinus/include/poller.h"
+#include "../libcircinus/include/AbstractIOMuxer.h"
 #include <thread>
 
 int main() {
@@ -34,8 +36,12 @@ int main() {
   auto server_ep = conn.receive<ServerEndPoint>();
 
   std::thread rtp_thread([&]() {
-    RTPSession session{conn.get_server(), 40102, 40103,
-                       server_ep.get_rtp_port(), server_ep.get_rtcp_port()};
+    RTPSession session{std::unique_ptr<AbstractIOMuxer>(new Poller{}),
+                       conn.get_server(), 
+                       40102, 
+                       40103,
+                       server_ep.get_rtp_port(), 
+                       server_ep.get_rtcp_port()};
     session.start();
   });
 
