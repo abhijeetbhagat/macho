@@ -15,8 +15,24 @@ void Poller::subscribe(int fd, Events event) {
   _count++;
 }
 
-// TODO implement unsubscribe()
-void Poller::unsubscribe() {}
+void Polle::unsubscribe(int fd) {
+  //linear search to find the right index of 'fd'
+  //fd's wont be stored sorted
+  int fd_i = -1;
+  for (int i = 0; i < _count; i++) {
+    if (_pollfds[i].fd == fd) {
+      fd_i = i;
+      break;
+    }
+  }
+  if (fd_i == -1) {
+    std::cout << "fd not found\n";
+    return;
+  }
+
+  _pollfds[fd_i] = _pollfds[_count - 1];
+  _count--;
+}
 
 int Poller::wait(const std::chrono::milliseconds &duration) {
   int timeout = duration.count();

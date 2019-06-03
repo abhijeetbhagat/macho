@@ -25,7 +25,8 @@ void EPoller::subscribe(int fd, Events event){
   }
 }
 
-void EPoller::unsubscribe(){
+//TODO implement unsubscribe
+void EPoller::unsubscribe(int fd){
 }
 
 int EPoller::wait(const std::chrono::milliseconds &duration){

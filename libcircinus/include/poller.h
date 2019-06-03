@@ -13,7 +13,7 @@ public:
   void open(uint32_t size);
   void close();
   void subscribe(int fd, Events event);
-  void unsubscribe();
+  void unsubscribe(int fd);
   int wait(const std::chrono::milliseconds &);
   std::vector<int> ready_set();
 
