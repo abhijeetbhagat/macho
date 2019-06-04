@@ -12,14 +12,16 @@ RTPSession::RTPSession(std::unique_ptr<AbstractIOMuxer> io_muxer, const std::str
                        uint16_t rtcp_port, uint16_t server_rtp_port,
                        uint16_t server_rtcp_port) {
   _io_muxer = std::move(io_muxer);
-  _video_rtp_socket = std::unique_ptr<UdpSocket>(new UdpSocket());
+  _source_filter = std::unique_ptr<H264SourceFilter>(new H264SourceFilter(_io_muxer, ip, data_port, server_rtp_port));
+  /*_video_rtp_socket = std::unique_ptr<UdpSocket>(new UdpSocket());
   _video_rtp_socket->set_blocking(false);
   _video_rtp_socket->bind_to(ip, data_port);
+  */
 
   // TODO if we dont do this, then we might not receive any packets
   // Found that this is used to overcome NAT traversal problem where we are behind a NAT
   // and so the server's streams can't reach us
-  _video_rtp_socket->send_to(ip, server_rtp_port, "Îúíþ");
+  //_video_rtp_socket->send_to(ip, server_rtp_port, "Îúíþ");
 
   _video_rtcp_socket = std::unique_ptr<UdpSocket>(new UdpSocket());
   _video_rtcp_socket->set_blocking(false);

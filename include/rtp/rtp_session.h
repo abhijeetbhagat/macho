@@ -2,6 +2,7 @@
 #define _RTPSESSION_H
 
 #include "../transport/UdpSocket.h"
+#include "../h264_source_filter.h"
 #include "../../libcircinus/include/AbstractIOMuxer.h"
 #include <memory>
 // Note: The design of this class is based on the RTP book by Colin Perkins.
@@ -23,6 +24,7 @@ private:
   std::unique_ptr<UdpSocket> _video_rtp_socket;  // rtp data listener
   std::unique_ptr<UdpSocket> _video_rtcp_socket; // rtcp data listener
   std::unique_ptr<AbstractIOMuxer> _io_muxer;
+  std::unique_ptr<H264SourceFilter> _source_filter;
 };
 
 #endif
