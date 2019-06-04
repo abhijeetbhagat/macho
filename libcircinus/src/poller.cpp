@@ -5,7 +5,10 @@ Poller::Poller() : _count(0), _pollfds(nullptr) {}
 
 Poller::~Poller() {}
 
-void Poller::open(uint32_t size) { _pollfds.reset(new pollfd[size]); }
+void Poller::open(uint32_t size) {
+  if (_pollfds == nullptr)
+    _pollfds.reset(new pollfd[size]); 
+}
 
 void Poller::close() {}
 
