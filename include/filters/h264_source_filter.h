@@ -1,16 +1,19 @@
 #ifndef _H264_SOURCE_FILTER_H_
 #define _H264_SOURCE_FILTER_H_
-#include "../include/rtp/depacketizer.h"
-#include "../include/transport/UdpSocket.h"
-#include "../include/RtpPacket.h"
-#include "../libcircinus/include/AbstractIOMuxer.h"
+#include "../../include/rtp/depacketizer.h"
+#include "../../include/transport/UdpSocket.h"
+#include "../../include/RtpPacket.h"
+#include "../../libcircinus/include/AbstractIOMuxer.h"
 #include <list>
 #include <memory>
 
-class H264RTPSourceFilter {
+class H264RTPSourceFilter : public ISourceFilter {
   public:
     H264RTPSourceFilter(std::unique_ptr<AbstractIOMuxer> io_muxer, const std::string &ip, uint16_t data_port, uint16_t server_rtp_port);
-    ~H264RTPSourceFilter() { }
+    ~H264RTPSourceFilter();
+    void get_next_frame(unsigned char* buffer);
+
+  private:
     std::unique_ptr<RTPPacket> packet;
     //TODO there should ideally be multiple input queues
     //each associated with an SSRC (esp. in video conferencing)

@@ -1,4 +1,4 @@
-#include "../include/h264_source_filter.h"
+#include "../include/filters/h264_source_filter.h"
 
 H264RTPSourceFilter::H264RTPSourceFilter(std::unique_ptr<AbstractIOMuxer> io_muxer, const std::string &ip, uint16_t data_port, uint16_t server_rtp_port) {
   _io_muxer = std::move(io_muxer);
@@ -9,4 +9,11 @@ H264RTPSourceFilter::H264RTPSourceFilter(std::unique_ptr<AbstractIOMuxer> io_mux
   // Found that this is used to overcome NAT traversal problem where we are behind a NAT
   // and so the server's streams can't reach us
   _video_rtp_socket->send_to(ip, server_rtp_port, "Îúíþ");
+}
+
+H264SourceFilter::~H264SourceFilter(){
+}
+
+void H264SourceFilter::get_next_frame(unsigned char* buffer) {
+  //TODO somehow, poll the rtp socket and call recv on it if ready
 }
