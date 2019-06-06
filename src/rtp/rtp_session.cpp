@@ -8,18 +8,21 @@
 #include <chrono>
 #include <sys/time.h>
 
-RTPSession::RTPSession(std::unique_ptr<AbstractIOMuxer> io_muxer, const std::string &ip, uint16_t data_port,
+RTPSession::RTPSession(std::unique_ptr<AbstractIOMuxer> io_muxer,
+                       const std::string &ip, uint16_t data_port,
                        uint16_t rtcp_port, uint16_t server_rtp_port,
                        uint16_t server_rtcp_port) {
   _io_muxer = std::move(io_muxer);
-  _source_filter = std::unique_ptr<H264SourceFilter>(new H264SourceFilter(_io_muxer, ip, data_port, server_rtp_port));
+  _source_filter.reset(
+      new H264RTPSourceFilter(/*_io_muxer, */ ip, data_port, server_rtp_port));
   /*_video_rtp_socket = std::unique_ptr<UdpSocket>(new UdpSocket());
   _video_rtp_socket->set_blocking(false);
   _video_rtp_socket->bind_to(ip, data_port);
   */
 
   // TODO if we dont do this, then we might not receive any packets
-  // Found that this is used to overcome NAT traversal problem where we are behind a NAT
+  // Found that this is used to overcome NAT traversal problem where we are
+  // behind a NAT
   // and so the server's streams can't reach us
   //_video_rtp_socket->send_to(ip, server_rtp_port, "Îúíþ");
 
@@ -28,7 +31,8 @@ RTPSession::RTPSession(std::unique_ptr<AbstractIOMuxer> io_muxer, const std::str
   _video_rtcp_socket->bind_to(ip, rtcp_port);
 
   // TODO if we dont do this, then we might not receive any packets
-  // Found that this is used to overcome NAT traversal problem where we are behind a NAT
+  // Found that this is used to overcome NAT traversal problem where we are
+  // behind a NAT
   // and so the server's streams can't reach us
   _video_rtcp_socket->send_to(ip, server_rtcp_port, "Îúíþ");
 }
@@ -57,7 +61,7 @@ void RTPSession::start() {
   pollfds[1].fd = rtcp_sd;
   pollfds[1].events = POLLIN;
   */
-  //Poller poller;
+  // Poller poller;
   _io_muxer->open(2);
   _io_muxer->subscribe(rtp_sd, Events::Read);
   _io_muxer->subscribe(rtcp_sd, Events::Read);
