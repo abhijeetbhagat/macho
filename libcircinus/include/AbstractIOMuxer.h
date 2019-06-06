@@ -17,7 +17,6 @@ public:
   virtual int wait() { return wait(std::chrono::milliseconds::max()); }
   virtual int wait(const std::chrono::milliseconds &) = 0;
   virtual std::vector<int> ready_set() = 0;
-
 };
 
 #endif

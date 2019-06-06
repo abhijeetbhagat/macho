@@ -5,31 +5,29 @@
 
 EPoller::EPoller() : _epfd(-1), _events(nullptr), _events_cnt(0) {}
 
-void EPoller::open(uint32_t size){
+void EPoller::open(uint32_t size) {
   _events.reset(new epoll_event[size]);
   _epfd = epoll_create(size);
   if (_epfd < 0) {
-    //TODO log error
+    // TODO log error
   }
 }
 
-void EPoller::close(){
-}
+void EPoller::close() {}
 
-void EPoller::subscribe(int fd, Events event){
+void EPoller::subscribe(int fd, Events event) {
   epoll_event ev;
   ev.events = static_cast<short int>(event);
   ev.data.fd = fd;
   if (epoll_ctl(_epfd, EPOLL_CTL_ADD, fd, &ev) < 0) {
-    //TODO log error
+    // TODO log error
   }
 }
 
-//TODO implement unsubscribe
-void EPoller::unsubscribe(int fd){
-}
+// TODO implement unsubscribe
+void EPoller::unsubscribe(int fd) {}
 
-int EPoller::wait(const std::chrono::milliseconds &duration){
+int EPoller::wait(const std::chrono::milliseconds &duration) {
   int timeout = duration.count();
   while (true) {
     _events_cnt = epoll_wait(_epfd, _events.get(), 2, timeout);

@@ -7,7 +7,7 @@ Poller::~Poller() {}
 
 void Poller::open(uint32_t size) {
   if (_pollfds == nullptr)
-    _pollfds.reset(new pollfd[size]); 
+    _pollfds.reset(new pollfd[size]);
 }
 
 void Poller::close() {}
@@ -19,8 +19,8 @@ void Poller::subscribe(int fd, Events event) {
 }
 
 void Poller::unsubscribe(int fd) {
-  //linear search to find the right index of 'fd'
-  //fd's wont be stored sorted
+  // linear search to find the right index of 'fd'
+  // fd's wont be stored sorted
   int fd_i = -1;
   for (int i = 0; i < _count; i++) {
     if (_pollfds[i].fd == fd) {

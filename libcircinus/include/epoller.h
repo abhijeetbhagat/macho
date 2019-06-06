@@ -2,11 +2,11 @@
 #define _EPOLLER_H
 
 #include "AbstractIOMuxer.h"
-#include <sys/epoll.h>
 #include <memory>
+#include <sys/epoll.h>
 // NOTE: The inspiration for the design of this class came from the Tango
 // library written in D.
-class EPoller : public AbstractIOMuxer{
+class EPoller : public AbstractIOMuxer {
 public:
   EPoller();
   ~EPoller() {}
