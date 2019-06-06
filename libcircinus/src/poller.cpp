@@ -18,7 +18,7 @@ void Poller::subscribe(int fd, Events event) {
   _count++;
 }
 
-void Polle::unsubscribe(int fd) {
+void Poller::unsubscribe(int fd) {
   //linear search to find the right index of 'fd'
   //fd's wont be stored sorted
   int fd_i = -1;
