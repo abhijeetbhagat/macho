@@ -14,7 +14,7 @@ public:
                       uint16_t server_rtp_port,
                       std::shared_ptr<AbstractIOMuxer> io_muxer = nullptr);
   ~H264RTPSourceFilter();
-  void get_next_frame(unsigned char *buffer);
+  void get_next_frame(std::string& buffer);
 
 private:
   std::unique_ptr<RtpPacket> packet;

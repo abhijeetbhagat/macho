@@ -18,7 +18,7 @@ H264RTPSourceFilter::H264RTPSourceFilter(
 
 H264RTPSourceFilter::~H264RTPSourceFilter() {}
 
-void H264RTPSourceFilter::get_next_frame(unsigned char *buffer) {
+void H264RTPSourceFilter::get_next_frame(std::string& buffer) {
   // TODO somehow, poll the rtp socket and call recv on it if ready
   int rc = _io_muxer->wait(std::chrono::milliseconds{50000});
   if (rc <= 0) {
@@ -27,8 +27,14 @@ void H264RTPSourceFilter::get_next_frame(unsigned char *buffer) {
   auto ready_set = _io_muxer->ready_set();
   for (int i = 0; i < ready_set.size(); i++) {
     // if(FD_ISSET(i, &working_set)){
-    if (ready_set[i] ==
-        _video_rtp_socket->get_desc()) { // RTP socket ready to be read
+    // RTP socket ready to be read
+    if (ready_set[i] == _video_rtp_socket->get_desc()) {
+        _video_rtp_socket->recv(buffer);
+        //auto packet = depacketizer.parse_rtp(buffer);
+        // TODO put this packet in a shared queue and signal a packet processor
+        // thread (producer-consumer)
+        //std::cout << packet;
+        //buffer.clear();
     }
   }
 }
