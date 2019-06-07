@@ -12,7 +12,7 @@ class H264RTPSourceFilter : public ISourceFilter {
 public:
   H264RTPSourceFilter(const std::string &ip, uint16_t data_port,
                       uint16_t server_rtp_port,
-                      std::unique_ptr<AbstractIOMuxer> io_muxer = nullptr);
+                      std::shared_ptr<AbstractIOMuxer> io_muxer = nullptr);
   ~H264RTPSourceFilter();
   void get_next_frame(unsigned char *buffer);
 
@@ -24,7 +24,7 @@ private:
   std::list<RtpPacket> input_queue;
   Depacketizer _depacketizer;
   std::unique_ptr<UdpSocket> _video_rtp_socket; // rtp data listener
-  std::unique_ptr<AbstractIOMuxer> _io_muxer;
+  std::shared_ptr<AbstractIOMuxer> _io_muxer;
 };
 
 #endif

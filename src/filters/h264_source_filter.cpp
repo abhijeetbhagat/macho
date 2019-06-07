@@ -3,8 +3,8 @@
 
 H264RTPSourceFilter::H264RTPSourceFilter(
     const std::string &ip, uint16_t data_port, uint16_t server_rtp_port,
-    std::unique_ptr<AbstractIOMuxer> io_muxer) {
-  _io_muxer = std::move(io_muxer);
+    std::shared_ptr<AbstractIOMuxer> io_muxer) {
+  _io_muxer = io_muxer;
   _video_rtp_socket = std::unique_ptr<UdpSocket>(new UdpSocket());
   _video_rtp_socket->set_blocking(false);
   _video_rtp_socket->bind_to(ip, data_port);
