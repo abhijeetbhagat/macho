@@ -14,7 +14,7 @@ RTPSession::RTPSession(std::unique_ptr<AbstractIOMuxer> io_muxer,
                        uint16_t server_rtcp_port) {
   _io_muxer = std::move(io_muxer);
   _source_filter.reset(
-      new H264RTPSourceFilter(/*_io_muxer, */ ip, data_port, server_rtp_port));
+      new H264RTPSourceFilter(ip, data_port, server_rtp_port, _io_muxer));
   /*_video_rtp_socket = std::unique_ptr<UdpSocket>(new UdpSocket());
   _video_rtp_socket->set_blocking(false);
   _video_rtp_socket->bind_to(ip, data_port);

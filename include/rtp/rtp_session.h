@@ -25,7 +25,7 @@ private:
   std::unique_ptr<UdpSocket> _audio_rtcp_socket; // rtcp data listener
   std::unique_ptr<UdpSocket> _video_rtp_socket;  // rtp data listener
   std::unique_ptr<UdpSocket> _video_rtcp_socket; // rtcp data listener
-  std::unique_ptr<AbstractIOMuxer> _io_muxer;
+  std::shared_ptr<AbstractIOMuxer> _io_muxer;
   std::unique_ptr<H264RTPSourceFilter> _source_filter;
 };
 
