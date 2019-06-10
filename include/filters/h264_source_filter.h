@@ -5,7 +5,7 @@
 #include "../../include/transport/UdpSocket.h"
 #include "../../libcircinus/include/AbstractIOMuxer.h"
 #include "ISourceFilter.h"
-#include <list>
+#include <queue>
 #include <memory>
 
 class H264RTPSourceFilter : public ISourceFilter {
@@ -17,11 +17,12 @@ public:
   void get_next_frame(std::string& buffer);
 
 private:
+  void store(const std::string& packet);
   std::unique_ptr<RtpPacket> packet;
   // TODO there should ideally be multiple input queues
   // each associated with an SSRC (esp. in video conferencing)
   // For now, deal with a single SSRC
-  std::list<RtpPacket> input_queue;
+  std::queue<RtpPacket> _input_queue;
   Depacketizer _depacketizer;
   std::unique_ptr<UdpSocket> _video_rtp_socket; // rtp data listener
   std::shared_ptr<AbstractIOMuxer> _io_muxer;

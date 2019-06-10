@@ -30,6 +30,7 @@ void H264RTPSourceFilter::get_next_frame(std::string& buffer) {
     // RTP socket ready to be read
     if (ready_set[i] == _video_rtp_socket->get_desc()) {
         _video_rtp_socket->recv(buffer);
+        store(buffer);
         //auto packet = depacketizer.parse_rtp(buffer);
         // TODO put this packet in a shared queue and signal a packet processor
         // thread (producer-consumer)
@@ -37,4 +38,9 @@ void H264RTPSourceFilter::get_next_frame(std::string& buffer) {
         //buffer.clear();
     }
   }
+}
+
+void H264RTPSourceFilter::store(const std::string& buffer){ 
+  auto packet = _depacketizer.parse_rtp(buffer);
+  _input_queue.push(std::move(packet));
 }
