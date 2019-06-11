@@ -15,6 +15,7 @@ public:
                       std::shared_ptr<AbstractIOMuxer> io_muxer = nullptr);
   ~H264RTPSourceFilter();
   void get_next_frame(std::string& buffer);
+  void open();
 
 private:
   void store(const std::string& packet);
