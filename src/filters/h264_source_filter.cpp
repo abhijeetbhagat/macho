@@ -19,17 +19,27 @@ H264RTPSourceFilter::H264RTPSourceFilter(
 H264RTPSourceFilter::~H264RTPSourceFilter() {}
 
 void H264RTPSourceFilter::get_next_frame(std::string& buffer) {
-  // TODO somehow, poll the rtp socket and call recv on it if ready
+  //TODO implement the consumer side here
+}
+
+void H264RTPSourceFilter::store(const std::string& buffer){ 
+  auto packet = _depacketizer.parse_rtp(buffer);
+  _input_queue.push(std::move(packet));
+}
+
+void H264RTPSourceFilter::open() {
   int rc = _io_muxer->wait(std::chrono::milliseconds{50000});
   if (rc <= 0) {
     return;
   }
   auto ready_set = _io_muxer->ready_set();
+  std::string buffer;
   for (int i = 0; i < ready_set.size(); i++) {
     // if(FD_ISSET(i, &working_set)){
     // RTP socket ready to be read
     if (ready_set[i] == _video_rtp_socket->get_desc()) {
         _video_rtp_socket->recv(buffer);
+        //TODO implement the producer side here
         store(buffer);
         //auto packet = depacketizer.parse_rtp(buffer);
         // TODO put this packet in a shared queue and signal a packet processor
@@ -38,9 +48,5 @@ void H264RTPSourceFilter::get_next_frame(std::string& buffer) {
         //buffer.clear();
     }
   }
-}
 
-void H264RTPSourceFilter::store(const std::string& buffer){ 
-  auto packet = _depacketizer.parse_rtp(buffer);
-  _input_queue.push(std::move(packet));
 }
